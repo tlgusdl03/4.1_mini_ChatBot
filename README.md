@@ -23,7 +23,8 @@ The app will run on http://localhost:5173 by default.
 
 ## 📦 Libraries Used
 
-Library | Description
-Vite | Project bundler and development environment
-openai | Official SDK for OpenAI API requests
-react-syntax-highlighter | Syntax highlighting for code block rendering
+| Library                  | Description                                  |
+| :----------------------- | :------------------------------------------- |
+| Vite                     | Project bundler and development environment  |
+| openai                   | Official SDK for OpenAI API requests         |
+| react-syntax-highlighter | Syntax highlighting for code block rendering |
