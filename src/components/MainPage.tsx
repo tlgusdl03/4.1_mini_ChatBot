@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { callGPT } from "../api/gpt";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
+import ReactMarkdown from "react-markdown";
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
@@ -52,7 +52,7 @@ const MainPage = () => {
         {messages.map((msg, idx) => (
           <div key={idx}>
             <strong>{msg.role === "user" ? "🙋 사용자" : "🤖 GPT"}</strong>
-            {/* ✅ 코드 블록 감지 */}
+            {/* ✅ 코드 블록 감지
             {msg.content.split(/```/g).map((block, i) =>
               i % 2 === 1 ? (
                 <SyntaxHighlighter
@@ -72,7 +72,34 @@ const MainPage = () => {
                   {block}
                 </p>
               )
-            )}
+            )} */}
+            <ReactMarkdown
+              children={msg.content}
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || "");
+                  return !inline ? (
+                    <SyntaxHighlighter
+                      language={match?.[1] || "tsx"}
+                      style={oneDark}
+                      customStyle={{
+                        backgroundColor: "#1e1e1e",
+                        borderRadius: "8px",
+                        padding: "1rem",
+                      }}
+                      PreTag="div"
+                      {...props}
+                    >
+                      {String(children).replace(/\n$/, "")}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+              }}
+            />
           </div>
         ))}
         <div ref={bottomRef} />
